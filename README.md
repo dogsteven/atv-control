@@ -5,6 +5,6 @@ The project uses object-oriented design:
 1. Manual dependency injecting for dependencies management.
 2. A global message queue `MessageQueue` to decouple the system.
 3. A (non-blocking) software job scheduler `JobScheduler`.
-4. `DevicePowerController`, `SafetyModule`, `SessionManager`, `AlertSystem` are logical models for real world entities.
+4. `DevicePowerController`, `SafetyModule`, `SessionManager`, `AlertSystem` are logical models for real world entities, and they're designed without giving up encapsulation.
 
 Currently, the sensors for the safety system have not yet been delivered, so we let the `SafetyModule` return `isSafe = true` all time.
