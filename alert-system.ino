@@ -15,9 +15,9 @@ void AlertSystem::OnMessage(const uint8_t messageType, void *const payload) {
     this->onSessionManagerDidAlert();
   } else if (messageType == SESSION_MANAGER_DID_STOP_SESSION_MESSAGE_TYPE || messageType == SESSION_MANAGER_DID_FORCE_STOP_SESSION_MESSAGE_TYPE) {
     this->onSessionManagerDidEndSession();
-  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT) {
+  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT_MESSAGE_TYPE) {
     this->onSafetyModuleDidTurnOnAlert();
-  } else if (messageType == SAFETY_MODULE_DID_TURN_OFF_ALERT) {
+  } else if (messageType == SAFETY_MODULE_DID_TURN_OFF_ALERT_MESSAGE_TYPE) {
     this->onSafetyModuleDidTurnOffAlert();
   }
 }

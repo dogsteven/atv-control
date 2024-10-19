@@ -11,9 +11,9 @@ void Logger::OnMessage(const uint8_t messageType, void *const payload) {
     Serial.println("SessionManager did StopSession");
   } else if (messageType == SESSION_MANAGER_DID_FORCE_STOP_SESSION_MESSAGE_TYPE) {
     Serial.println("SessionManager did ForceStopSession");
-  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT) {
+  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT_MESSAGE_TYPE) {
     Serial.println("SafetyModule did TurnOnAlert");
-  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT) {
+  } else if (messageType == SAFETY_MODULE_DID_TURN_ON_ALERT_MESSAGE_TYPE) {
     Serial.println("SafetyModule did TurnOffAlert");
   }
 }

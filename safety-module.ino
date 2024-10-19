@@ -15,7 +15,7 @@ void SafetyModule::turnOnAlert() {
 
   this->isAlertOn = true;
 
-  this->messageQueue->PublishMessage(SAFETY_MODULE_DID_TURN_ON_ALERT, NULL);
+  this->messageQueue->PublishMessage(SAFETY_MODULE_DID_TURN_ON_ALERT_MESSAGE_TYPE, NULL);
 }
 
 void SafetyModule::turnOffAlert() {
@@ -25,7 +25,7 @@ void SafetyModule::turnOffAlert() {
 
   this->isAlertOn = false;
 
-  this->messageQueue->PublishMessage(SAFETY_MODULE_DID_TURN_OFF_ALERT, NULL);
+  this->messageQueue->PublishMessage(SAFETY_MODULE_DID_TURN_OFF_ALERT_MESSAGE_TYPE, NULL);
 }
 
 void SafetyModule::CheckSafety() {
