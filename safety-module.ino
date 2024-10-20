@@ -2,10 +2,12 @@
 
 SafetyModule::SafetyModule(MessageQueue* const messageQueue): messageQueue(messageQueue), isAlertOn(false) {}
 
-void SafetyModule::collectParameters() {}
+void SafetyModule::Initialize() {
+  pinMode(0, INPUT_PULLUP);
+}
 
-bool SafetyModule::calculateSafetyFactor() {
-  return true;
+bool SafetyModule::collectParametersAndCalculateSafety() {
+  return digitalRead(0) == HIGH;
 }
 
 void SafetyModule::turnOnAlert() {
@@ -29,10 +31,7 @@ void SafetyModule::turnOffAlert() {
 }
 
 void SafetyModule::CheckSafety() {
-  this->collectParameters();
-  ;
-
-  if (this->calculateSafetyFactor()) {
+  if (this->collectParametersAndCalculateSafety()) {
     this->turnOffAlert();
   } else {
     this->turnOnAlert();

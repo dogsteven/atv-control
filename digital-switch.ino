@@ -2,7 +2,7 @@
 
 DigitalSwitch::DigitalSwitch(uint8_t const pin): pin(pin), isLogicallyClosed(false) {}
 
-void DigitalSwitch::Initialize() const {
+void DigitalSwitch::Initialize() {
   pinMode(this->pin, OUTPUT);
 }
 

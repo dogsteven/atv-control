@@ -17,14 +17,15 @@ private:
 
   bool isAlertOn;
 
-  void collectParameters();
-  bool calculateSafetyFactor();
+  bool collectParametersAndCalculateSafety();
 
   void turnOnAlert();
   void turnOffAlert();
 
 public:
   SafetyModule(MessageQueue* const messageQueue);
+
+  void Initialize();
 
   void CheckSafety();
 };

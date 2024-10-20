@@ -12,6 +12,7 @@ enum UserInput {
 
 class UserInputReader {
 public:
+  virtual void Initialize() = 0;
   virtual UserInput ReadUserInput() const = 0;
 };
 

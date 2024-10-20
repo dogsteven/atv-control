@@ -66,16 +66,36 @@
 #define ALERT_DIGITAL_PIN LED_BUILTIN
 #endif
 
+#import "serial-user-input-reader.hpp"
 #import "digital-user-input-reader.hpp"
+#import "digital-switch.hpp"
+#import "lcd-i2c-display-screen.hpp"
 #import "application.hpp"
+#import "logger.hpp"
 
-// SerialUserInputReader userInputReader;
+class ConstantSessionManagerConfiguration: public SessionManagerConfiguration {
+public:
+  ConstantSessionManagerConfiguration() {}
+
+  uint32_t SessionDuration() const override {
+    return (uint32_t)30000;
+  }
+
+  uint32_t AlertDuration() const override {
+    return (uint32_t)10000;
+  }
+};
+
+DigitalSwitch devicePowerSwitch(DEVICE_POWER_DIGITAL_PIN);
+DigitalSwitch alertSwitch(ALERT_DIGITAL_PIN);
+LcdI2CDisplayScreen displayScreen;
+ConstantSessionManagerConfiguration sessionManagerConfiguration;
 DigitalUserInputReader userInputReader;
-Application application(&userInputReader);
+// Logger logger;
+
+Application application(&devicePowerSwitch, &alertSwitch, &displayScreen, &sessionManagerConfiguration, &userInputReader, NULL);
 
 void setup() {
-  Serial.begin(9600);
-  userInputReader.Initialize();
   application.Initialize();
 }
 

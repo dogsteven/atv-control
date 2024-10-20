@@ -2,6 +2,10 @@
 
 SerialUserInputReader::SerialUserInputReader() {}
 
+void SerialUserInputReader::Initialize() {
+  Serial.begin(9600);
+}
+
 UserInput SerialUserInputReader::ReadUserInput() const {
   if (Serial.available() > 0) {
     const int command = char(Serial.read());

@@ -7,6 +7,8 @@ class SerialUserInputReader: public UserInputReader {
 public:
   SerialUserInputReader();
 
+  void Initialize() override;
+
   UserInput ReadUserInput() const override;
 };
 

@@ -1,32 +1,47 @@
 #import "application.hpp"
 
-Application::Application(UserInputReader* const userInputReader):
-  devicePowerSwitch(DEVICE_POWER_DIGITAL_PIN),
-  alertSwitch(ALERT_DIGITAL_PIN),
-  displayScreen(),
-  jobScheduler(),
-  messageQueue(),
-  persistentStorage(),
-  sessionManager(&sessionManagerConfiguration, &jobScheduler, &messageQueue, &persistentStorage),
-  safetyModule(&messageQueue),
-  alertSystem(&alertSwitch),
-  devicePowerController(&devicePowerSwitch),
+Application::Application(
+  Switch* const devicePowerSwitch,
+    Switch* const alertSwitch,
+    DisplayScreen* const displayScreen,
+    SessionManagerConfiguration* const sessionManagerConfiguration,
+    UserInputReader* const userInputReader,
+    Logger* const logger
+): devicePowerSwitch(devicePowerSwitch),
+  alertSwitch(alertSwitch),
+  displayScreen(displayScreen),
+  sessionManagerConfiguration(sessionManagerConfiguration),
   userInputReader(userInputReader),
-  logger() {}
+  messageQueue(),
+  jobScheduler(),
+  persistentStorage(),
+  sessionManager(sessionManagerConfiguration, &jobScheduler, &messageQueue, &persistentStorage),
+  safetyModule(&messageQueue),
+  devicePowerController(devicePowerSwitch),
+  alertSystem(alertSwitch),
+  logger(logger) {}
 
 void Application::Initialize() {
-  this->devicePowerSwitch.Initialize();
-  this->alertSwitch.Initialize();
-  this->displayScreen.Initialize();
+  this->devicePowerSwitch->Initialize();
+  this->alertSwitch->Initialize();
+  this->displayScreen->Initialize();
+  this->userInputReader->Initialize();
+
   this->sessionManager.Initialize();
+  this->safetyModule.Initialize();
 
   this->messageQueue.AddSubscriber(&(this->alertSystem));
   this->messageQueue.AddSubscriber(&(this->devicePowerController));
-  this->messageQueue.AddSubscriber(&(this->logger));
+
+  if (this->logger != NULL) {
+    this->messageQueue.AddSubscriber(this->logger);
+  }
 }
 
 void Application::Loop() {
   this->jobScheduler.Tick();
+
+  this->safetyModule.CheckSafety();
 
   const UserInput input = this->userInputReader->ReadUserInput();
 
@@ -52,11 +67,11 @@ void Application::forceStopSession() {
 }
 
 void Application::displayNumberOfSessions() {
-  this->displayScreen.DisplayOn();
-  this->displayScreen.Clear();
-  this->displayScreen.Print("SO LAN CHOI:");
-  this->displayScreen.SetCursor(1, 0);
-  this->displayScreen.Print(String(this->sessionManager.NumberOfSessions()));
+  this->displayScreen->DisplayOn();
+  this->displayScreen->Clear();
+  this->displayScreen->Print("SO LAN CHOI:");
+  this->displayScreen->SetCursor(1, 0);
+  this->displayScreen->Print(String(this->sessionManager.NumberOfSessions()));
 }
 
 void Application::resetSessionCounter() {
@@ -65,5 +80,5 @@ void Application::resetSessionCounter() {
 }
 
 void Application::turnOfDisplayScreen() {
-  this->displayScreen.DisplayOff();
+  this->displayScreen->DisplayOff();
 }

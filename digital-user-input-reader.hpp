@@ -27,7 +27,7 @@ class DigitalUserInputReader: public UserInputReader {
 public:
   DigitalUserInputReader();
 
-  void Initialize();
+  void Initialize() override;
 
   UserInput ReadUserInput() const override;
 };

@@ -11,7 +11,7 @@ private:
 public:
   DigitalSwitch(uint8_t const pin);
 
-  void Initialize() const;
+  void Initialize() override;
 
   bool IsClosed() const override;
   void Close() override;

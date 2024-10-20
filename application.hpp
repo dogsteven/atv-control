@@ -1,7 +1,9 @@
+#include "display-screen.hpp"
 #ifndef APPLICATION_HEADER
 #define APPLICATION_HEADER
 
-#import "digital-switch.hpp"
+#import "switch.hpp"
+#import "display-screen.hpp"
 #import "persistent-storage.hpp"
 #import "safety-module.hpp"
 #import "alert-system.hpp"
@@ -10,7 +12,6 @@
 #import "job-scheduler.hpp"
 #import "user-input-reader.hpp"
 #import "device-power-controller.hpp"
-#import "lcd-i2c-display-screen.hpp"
 #import "logger.hpp"
 
 #ifndef DEVICE_POWER_DIGITAL_PIN
@@ -21,40 +22,28 @@
 #define ALERT_DIGITAL_PIN 13
 #endif
 
-class ConstantSessionManagerConfiguration: public SessionManagerConfiguration {
-public:
-  ConstantSessionManagerConfiguration() {}
-
-  uint32_t SessionDuration() const {
-    return (uint32_t)30000;
-  }
-
-  uint32_t AlertDuration() const {
-    return (uint32_t)10000;
-  }
-};
-
 class Application {
 private:
-  DigitalSwitch devicePowerSwitch;
-  DigitalSwitch alertSwitch;
-  LcdI2CDisplayScreen displayScreen;
+  Switch* const devicePowerSwitch;
+  Switch* const alertSwitch;
+  DisplayScreen* const displayScreen;
 
-  ConstantSessionManagerConfiguration sessionManagerConfiguration;
+  SessionManagerConfiguration* const sessionManagerConfiguration;
+
+  UserInputReader* const userInputReader;
+
+  MessageQueue messageQueue;
 
   JobScheduler jobScheduler;
-  MessageQueue messageQueue;
   PersistentStorage persistentStorage;
 
   SessionManager sessionManager;
   SafetyModule safetyModule;
 
-  AlertSystem alertSystem;
   DevicePowerController devicePowerController;
-
-  UserInputReader* const userInputReader;
-
-  Logger logger;
+  AlertSystem alertSystem;
+  
+  Logger* const logger;
 
   void startSession();
   void forceStopSession();
@@ -63,7 +52,14 @@ private:
   void turnOfDisplayScreen();
 
 public:
-  Application(UserInputReader* const userInputReader);
+  Application(
+    Switch* const devicePowerSwitch,
+    Switch* const alertSwitch,
+    DisplayScreen* const displayScreen,
+    SessionManagerConfiguration* const sessionManagerConfiguration,
+    UserInputReader* const userInputReader,
+    Logger* const logger
+  );
 
   void Initialize();
   void Loop();
